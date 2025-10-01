@@ -39,29 +39,29 @@ def create_hotel(title: str = Body(embed=True)): #embed=True - если пере
     return {"status": "OK"}
 
 
-@app.put("/full_update_hotels/{hotel_id}")
+@app.put("/hotels/{hotel_id}")
 def full_update_hotel(
-        id: int,
-        title: str,
-        name: str
+        hotel_id: int,
+        title: str = Body(),
+        name: str = Body()
 ):
     global hotels
     for hotel in hotels:
-        if hotel['id'] == id:
+        if hotel['id'] == hotel_id:
             hotel['title'] = title
             hotel['name'] = name
     return {"status": "OK"}
 
 
-@app.patch("/update_hotels/{hotel_id}")
+@app.patch("/hotels/{hotel_id}", summary="Частичное обновление данных об отеле")
 def update_hotel(
-        id: int,
-        title: str | None = Query(None),
-        name: str | None = Query(None)
+        hotel_id: int,
+        title: str | None = Body(None),
+        name: str | None = Body(None)
 ):
     global hotels
     for hotel in hotels:
-        if hotel['id'] == id:
+        if hotel['id'] == hotel_id:
             if title is not None:
                 hotel['title'] = title
             if name is not None:
